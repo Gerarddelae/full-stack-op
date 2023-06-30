@@ -39,7 +39,6 @@ const App = () => {
   }
 
   const parts = course.parts
-  console.log(parts);
 
   return (
     <div>
