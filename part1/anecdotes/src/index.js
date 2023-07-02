@@ -7,12 +7,25 @@ const Button = ({name, handleClick}) => {
   )
 }
 
+const Count = ({votes}) => {
+  return (
+    <p>has {votes} votes</p>
+  )
+}
+
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState(Array(6).fill(0))
 
   const randomInt = () => {
-    setSelected(Math.floor(Math.random() * 5))
+    setSelected(Math.floor(Math.random() * 6))
+  }
+
+  const addVote = () =>  {
+    const copy = [...points]
+    copy[selected] += 1
+    setPoints(copy)
   }
 
   return (
@@ -20,6 +33,8 @@ const App = (props) => {
       <div>
         {props.anecdotes[selected]}
       </div>
+      <Count votes={points[selected]} />
+      <Button name={"vote"} handleClick={addVote} />
       <Button name={"next anecdote"} handleClick={randomInt} />
     </>
 
