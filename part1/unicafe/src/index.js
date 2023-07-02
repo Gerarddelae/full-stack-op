@@ -59,10 +59,6 @@ const App = () => {
     bad
   }
 
-  let all = good + bad + neutral
-  let average = (good *(1) + bad*(-1))/all
-  let positive = (good/all * 100) + " %"
-
   return (
     <div>
       <Title title={"give feedback"}/>
