@@ -13,6 +13,18 @@ const Count = ({votes}) => {
   )
 }
 
+const Title = ({name}) => {
+  return (
+    <h2>{name}</h2>
+  )
+}
+
+const Anecdote = ({anecdotes, selected}) => {
+
+  return (
+    <p>{anecdotes[selected]}</p>
+  )
+}
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
@@ -28,14 +40,21 @@ const App = (props) => {
     setPoints(copy)
   }
 
+  let maxVote = points.indexOf(Math.max(...points))
+
   return (
     <>
+      <Title name={"Anecdote of the day"} />
       <div>
-        {props.anecdotes[selected]}
+        <Anecdote anecdotes={anecdotes} selected={selected} />
       </div>
       <Count votes={points[selected]} />
       <Button name={"vote"} handleClick={addVote} />
       <Button name={"next anecdote"} handleClick={randomInt} />
+      <Title name={"Anecdote with most votes"} />
+      <div>
+        <Anecdote anecdotes={anecdotes} selected={maxVote} />
+      </div>
     </>
 
   )
