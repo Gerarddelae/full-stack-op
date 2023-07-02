@@ -11,7 +11,7 @@ const Button = ({name, handleClick}) => {
   )
 }
 
-const Count = ({name, count}) => {
+const StatisticLine = ({name, count}) => {
   return (
     <p>{name} {count}</p>
   )
@@ -27,12 +27,12 @@ const Statistics = ({stats}) => {
   }
   return (
   <>
-      <Count name={"good"} count={good}/>
-      <Count name={"neutral"} count={neutral}/>
-      <Count name={"bad"} count={bad}/>
-      <Count name={"all"} count={all}/>
-      <Count name={"average"} count={average}/>
-      <Count name={"positive"} count={positive}/>
+      <StatisticLine name={"good"} count={good}/>
+      <StatisticLine name={"neutral"} count={neutral}/>
+      <StatisticLine name={"bad"} count={bad}/>
+      <StatisticLine name={"all"} count={all}/>
+      <StatisticLine name={"average"} count={average}/>
+      <StatisticLine name={"positive"} count={positive}/>
   </>
   )
 }
