@@ -17,6 +17,23 @@ const Count = ({name, count}) => {
   )
 }
 
+const Statistics = ({stats}) => {
+  const {good, bad, neutral} = stats
+  let all = good + bad + neutral
+  let average = (good *(1) + bad*(-1))/all
+  let positive = (good/all * 100) + " %"
+  return (
+  <>
+      <Count name={"good"} count={good}/>
+      <Count name={"neutral"} count={neutral}/>
+      <Count name={"bad"} count={bad}/>
+      <Count name={"all"} count={all}/>
+      <Count name={"average"} count={average}/>
+      <Count name={"positive"} count={positive}/>
+  </>
+  )
+}
+
 
 const App = () => {
   // save clicks of each button to its own state
@@ -36,6 +53,12 @@ const App = () => {
     setBad(bad + 1)
   }
 
+  const stats = {
+    good,
+    neutral,
+    bad
+  }
+
   let all = good + bad + neutral
   let average = (good *(1) + bad*(-1))/all
   let positive = (good/all * 100) + " %"
@@ -47,12 +70,7 @@ const App = () => {
       <Button name={"neutral"} handleClick={addNeutral}/>
       <Button name={"bad"} handleClick={addBad}/>
       <Title title={"statistics"}/>
-      <Count name={"good"} count={good}/>
-      <Count name={"neutral"} count={neutral}/>
-      <Count name={"bad"} count={bad}/>
-      <Count name={"all"} count={all}/>
-      <Count name={"average"} count={average}/>
-      <Count name={"positive"} count={positive}/>
+      <Statistics stats={stats}/>
     </div>
   )
 }
