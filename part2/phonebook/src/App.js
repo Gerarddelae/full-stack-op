@@ -11,13 +11,15 @@ const App = () => {
     const newPerson = {
       name: newName
     }
-    setPersons(persons.concat(newPerson))
+    const onlyNames = persons.map(persons => persons.name)
+    onlyNames.includes(newName)? alert(`${newName} is already added to phonebook`) : setPersons(persons.concat(newPerson))
     setNewName('')
   }
 
   const handleChange = (event) => {
     setNewName(event.target.value)
   }
+
 
   return (
     <div>
@@ -31,7 +33,6 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <div>debug: {newName}</div>
       <div>
         {persons.map(persons => 
           <p style={{margin: 0}}>{persons.name} </p> 
