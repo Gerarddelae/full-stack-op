@@ -9,7 +9,7 @@ export const Persons = ({persons, filter}) => {
     return (
         <div>
         {personsToShow.map(persons => 
-          <p style={{margin: 0}}>{persons.name} {persons.number} </p> 
+          <p key={persons.id} style={{margin: 0}}>{persons.name} {persons.number} </p> 
           )}
       </div>
     )
