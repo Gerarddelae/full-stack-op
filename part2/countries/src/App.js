@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Country } from "./components/Country";
 
 const App = () => {
   const apiURL = "https://studies.cs.helsinki.fi/restcountries/api/all";
@@ -26,12 +27,15 @@ const App = () => {
       ? "Too many matches, specify another filter"
       : filterNames.map((name) => <p style={{margin: 0}}>{name}</p>);
 
+  const indexOfCountry = filterNames.length === 1 ? names.indexOf(filterNames[0]) : 'Many countries'
+  const countryInfo = indexOfCountry !== 'Many countries' ? country[indexOfCountry] : 'Many countries' 
+  console.log(countryInfo);
   return (
     <>
       <div>
         find countries <input onChange={handleChange} value={filter} />
       </div>
-      <div>{namesToShow}</div>
+      <div>{filterNames.length !== 1 ? namesToShow : <Country countryInfo={countryInfo}/>}</div>
     </>
   );
 };
