@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Country } from "./components/Country";
+import { Show } from "./components/Show";
 
 const App = () => {
   const apiURL = "https://studies.cs.helsinki.fi/restcountries/api/all";
@@ -25,11 +26,10 @@ const App = () => {
   const namesToShow =
     filterNames.length > 10
       ? "Too many matches, specify another filter"
-      : filterNames.map((name) => <p style={{margin: 0}}>{name}</p>);
+      : filterNames.map((name, index) => <p key={index} style={{margin: 0}}>{name} <Show name={name} setFilter={setFilter} /> </p>);
 
   const indexOfCountry = filterNames.length === 1 ? names.indexOf(filterNames[0]) : 'Many countries'
   const countryInfo = indexOfCountry !== 'Many countries' ? country[indexOfCountry] : 'Many countries' 
-  console.log(countryInfo);
   return (
     <>
       <div>

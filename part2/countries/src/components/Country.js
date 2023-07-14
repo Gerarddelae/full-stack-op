@@ -1,7 +1,6 @@
 export const Country = ({ countryInfo }) => {
   const languages = Object.values(countryInfo.languages);
   const flag = countryInfo.flags.png;
-  console.log(flag);
   return (
     <div>
       <h2>{countryInfo.name.common}</h2>
