@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
+import "./index.css";
 import { Filter } from "./components/Filter";
 import { PersonForm } from "./components/PersonForm";
 import personService from "./services/persons";
 import { Button } from "./components/Button";
+import { Notification } from "./components/Notification";
+import { Error } from "./components/Error";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [message, setMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((persons) => {
@@ -25,19 +30,32 @@ const App = () => {
     const onlyNames = persons.map((persons) => persons.name);
     const position = onlyNames.indexOf(newName);
     const id = position === -1 ? undefined : position;
-    const serverID = persons[id].id;
+    const serverID = id === undefined ? -1 : persons[id].id;
     onlyNames.includes(newName)
       ? updateNumber(serverID, newName, newNumber)
-      : personService.create(newPerson).then((newPerson) => {
-          setPersons(persons.concat(newPerson));
-          setNewName("");
-          setNewNumber("");
-        });
+      : personService
+          .create(newPerson)
+          .then((newPerson) => {
+            setPersons(persons.concat(newPerson));
+            setNewName("");
+            setNewNumber("");
+          })
+          .then(
+            setMessage(`Added ${newName}`),
+            setTimeout(() => {
+              setMessage(null);
+            }, 2000)
+          );
   };
 
   const deletePerson = (id, name) => {
     if (window.confirm(`Delete ${name}?`)) {
-      personService.remove(id);
+      personService.remove(id).catch((error) => {
+        setErrorMessage(`${name} was already removed from server`);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+      });
       setPersons(persons.filter((person) => person.id !== id));
     } else {
       return;
@@ -87,7 +105,9 @@ const App = () => {
         );
   return (
     <div>
-      <h2>Phonebook App</h2>
+      <h1>Phonebook App</h1>
+      <Notification message={message} />
+      <Error message={errorMessage} />
       <Filter handleFilter={handleFilter} />
       <h3>Add a new</h3>
       <PersonForm
