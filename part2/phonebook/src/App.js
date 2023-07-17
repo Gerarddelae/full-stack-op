@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Filter } from "./components/Filter";
 import { PersonForm } from "./components/PersonForm";
-import { Persons } from "./components/Persons";
+import personService from './services/persons'
+import { Button } from "./components/Button";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,9 +11,9 @@ const App = () => {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
-    });
+    personService.getAll().then(persons => {
+      setPersons(persons)
+    })
   }, []);
 
   const addPerson = (event) => {
@@ -25,13 +25,21 @@ const App = () => {
     const onlyNames = persons.map((persons) => persons.name);
     onlyNames.includes(newName)
       ? alert(`${newName} is already added to phonebook`)
-      : axios.post('http://localhost:3001/persons', newPerson)
-        .then(response => {
-          setPersons(persons.concat(response.data))
-          setNewName("");
-          setNewNumber("");
-        });
+      : personService.create(newPerson).then(newPerson => {
+        setPersons(persons.concat(newPerson))
+        setNewName('')
+        setNewNumber('')
+      });
   };
+
+  const deletePerson = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+        personService.remove(id)
+        setPersons(persons.filter(person => person.id !== id))
+    } else {
+        return
+    }
+  }
 
   const handleName = (event) => {
     setNewName(event.target.value);
@@ -52,7 +60,6 @@ const App = () => {
       : persons.filter((person) =>
           person.name.toLocaleLowerCase().startsWith(filter.toLocaleLowerCase())
         );
-
   return (
     <div>
       <h2>Phonebook App</h2>
@@ -66,7 +73,16 @@ const App = () => {
         handleNumber={handleNumber}
       />
       <h3>Numbers</h3>
-      <Persons persons={persons} filter={filter} />
+      <div>
+        {personsToShow.map(persons => 
+          <p key={persons.id} style={{margin: 0}}>{persons.name} {persons.number} 
+           <Button 
+           id={persons.id}
+           name={persons.name}
+           deletePerson={deletePerson} 
+           /> </p> 
+          )}
+      </div>
     </div>
   );
 };
