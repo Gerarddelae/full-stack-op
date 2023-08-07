@@ -40,11 +40,13 @@ const App = () => {
             setNewName("");
             setNewNumber("");
           })
-          .then(
-            setMessage(`Added ${newName}`),
-            setTimeout(() => {
-              setMessage(null);
-            }, 2000)
+          .then((newPerson) => {
+            if (!errorMessage) {              
+              setMessage(`Added ${newName}`)
+              setTimeout(() => {
+                setMessage(null);
+              }, 2000)
+            }}
           ).catch((error) => {setErrorMessage(error.response.data.error);
             setTimeout(() => {
               setErrorMessage(null);
