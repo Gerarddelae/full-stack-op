@@ -35,15 +35,19 @@ const App = () => {
             {name} <Show name={name} setFilter={setFilter} />
           </p>
         ));
-  //FIXME: REFACTORIZAR ESTA PARTE 
-  const indexOfCountry =
-    filterNames.length === 1 ? names.indexOf(filterNames[0]) : "Many countries";
-  const countryInfo =
-    indexOfCountry !== "Many countries"
-      ? country[indexOfCountry]
-      : "Many countries";
-  const capital =
-    countryInfo !== "Many countries" ? countryInfo.capital[0] : "nada";
+
+  const queryController = (list) => {
+    if (filterNames.length === 1) {
+      const index = names.indexOf(list[0])
+      const countryInfo = country[index]
+      const capital = countryInfo.capital[0]
+      return [capital, countryInfo]
+    }
+    return ["nada", null]
+  }
+
+  const [capital, countryInfo] = queryController(filterNames)
+
   const params = {
     access_key: process.env.REACT_APP_API_KEY,
     query: capital
